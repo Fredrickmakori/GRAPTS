@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Projects: public read for non-pending projects, writes only by admins/project managers
+    match /projects/{projectId} {
+      allow read: if resource.data.status != "Pending" || request.auth != null;
+      allow create, update, delete: if request.auth != null && (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ["admin","project_manager"]);
+    }
+
+    // Milestones: restricted to authenticated users and project managers
+    match /milestones/{milestoneId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null && (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ["admin","project_manager","auditor"]);
+    }
+
+    // Disbursements: financial officers and admins
+    match /disbursements/{docId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null && (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ["admin","financial_officer"]);
+    }
+
+    // Issues: any authenticated user can create; anyone can read
+    match /issues/{docId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ["admin","project_manager"]);
+    }
+
+    // Audit logs: only auditors and admins
+    match /audit_logs/{logId} {
+      allow read: if request.auth != null && (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ["admin","auditor"]);
+      allow create: if false; // only backend service account should write
+    }
+
+    // Documents: uploaded files metadata
+    match /documents/{docId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ["admin","project_manager"]);
+    }
+  }
+}
