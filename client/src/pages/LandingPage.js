@@ -1,7 +1,7 @@
 import React from "react";
 import { FiBarChart2, FiShield, FiUsers } from "react-icons/fi";
-import Logo from "../../design/logo.svg";
-import Mock from "../../design/mock-dashboard.png";
+import Logo from "../assets/logo.svg";
+import Mock from "../assets/mock-dashboard.png";
 
 export const LandingPage = () => {
   return (

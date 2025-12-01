@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GRAPTS — Landing (MVP mockup)</title>
+    <link rel="stylesheet" href="./styles/landing.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <!-- Inline SVG logo file is provided separately -->
+          <img src="./logo.svg" alt="GRAPTS logo" class="logo" />
+          <h1 class="sr-only">GRAPTS</h1>
+        </div>
+        <nav class="nav">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#contact" class="btn btn-ghost">Get Started</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <h2>Transparent government project tracking.</h2>
+            <p class="lead">Track projects, allocate resources, verify milestones, and publish public dashboards — built for accountability.</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#">Try Demo</a>
+              <a class="btn btn-outline" href="#">View Public Dashboard</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <!-- Placeholder visual — use SVG or screenshot in Canva -->
+            <div class="card-visual">
+              <img src="./mock-dashboard.png" alt="Mock dashboard" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="features">
+        <div class="container">
+          <h3 class="section-title">Core MVP features</h3>
+          <div class="features-grid">
+            <div class="feature">
+              <img src="./icons/project.svg" alt="Projects" />
+              <h4>Project Management</h4>
+              <p>Register projects, add milestones, upload documents and track status.</p>
+            </div>
+            <div class="feature">
+              <img src="./icons/disbursement.svg" alt="Funds" />
+              <h4>Funds & Disbursements</h4>
+              <p>Log disbursements, compare allocated vs used funds and generate reports.</p>
+            </div>
+            <div class="feature">
+              <img src="./icons/audit.svg" alt="Audit" />
+              <h4>Audit Ledger</h4>
+              <p>Tamper-evident audit logs with SHA-256 hashing for every action.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="how">
+        <div class="container">
+          <h3 class="section-title">How GRAPTS works — quick flow</h3>
+          <div class="flow">
+            <div class="step">1. Create project</div>
+            <div class="step">2. Allocate funds</div>
+            <div class="step">3. Upload milestone proof</div>
+            <div class="step">4. Auditor verifies</div>
+            <div class="step">5. Publish public dashboard</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="cta-band">
+        <div class="container">
+          <h3>Ready to model the UI?</h3>
+          <p>Use the SVG assets in this folder and the HTML mockup to create high-fidelity designs in Canva.</p>
+          <a class="btn btn-primary" href="#">Download assets</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>© <strong>GRAPTS</strong> — Government Resource Allocation & Project Tracking System</div>
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

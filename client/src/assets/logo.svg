@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="40" height="40" rx="8" fill="#1e3c72" />
+  <path d="M10 8 L30 8 L20 28 Z" fill="#fff" transform="translate(0,0)"/>
+  <g transform="translate(50,6)">
+    <text x="0" y="16" font-family="Inter, Arial" font-size="16" fill="#1e3c72" font-weight="700">GRAPTS</text>
+  </g>
+</svg>
