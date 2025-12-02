@@ -1,7 +1,6 @@
 import React from "react";
 import { FiBarChart2, FiShield, FiUsers } from "react-icons/fi";
 import Logo from "../assets/logo.svg";
-import Mock from "../assets/mock-dashboard.png";
 
 const FeatureCard = ({ icon, title, children }) => (
   <div className="p-6 rounded-xl shadow-sm bg-white">
@@ -17,31 +16,42 @@ const FeatureCard = ({ icon, title, children }) => (
   </div>
 );
 
-const HeroMosaic = ({ className = "" }) => (
-  <div className={`relative ${className}`}>
-    <div className="grid grid-cols-2 gap-2">
-      <img
-        src={Mock}
-        alt="Project dashboard mock"
-        className="rounded-xl object-cover h-56 w-full shadow"
-      />
-      <div className="space-y-2">
-        <div className="h-28 bg-gradient-to-tr from-slate-100 to-white rounded-xl" />
-        <div className="h-24 bg-gradient-to-tr from-slate-100 to-white rounded-xl" />
+const HeroMosaic = ({ className = "" }) => {
+  // Curated Unsplash images related to infrastructure and civic projects
+  const imgA = "https://images.unsplash.com/photo-1509395176047-4a66953fd231?w=1200&q=80&auto=format&fit=crop"; // road
+  const imgB = "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&q=80&auto=format&fit=crop"; // construction
+
+  return (
+    <div className={`relative ${className}`}>
+      <div className="grid grid-cols-2 gap-2">
+        <img
+          src={imgA}
+          alt="Infrastructure"
+          className="rounded-xl object-cover h-56 w-full shadow"
+        />
+        <div className="space-y-2">
+          <img
+            src={imgB}
+            alt="Construction"
+            className="rounded-xl object-cover h-28 w-full shadow"
+          />
+          <div className="h-24 bg-brand-50 rounded-xl flex items-center justify-center text-sm text-brand-700">
+            <div className="p-4">Community impact maps and live data</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="absolute -bottom-10 left-4 w-64 card brand-shadow p-4">
+        <div className="text-xs text-muted">Live sample</div>
+        <div className="mt-1 font-semibold text-brand-700">Kisumu Road Upgrade</div>
+        <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+          <div className="bg-brand-50 p-2 rounded text-sm">Budget: KSh 23M</div>
+          <div className="bg-brand-50 p-2 rounded text-sm">Progress: 67%</div>
+        </div>
       </div>
     </div>
-    <div className="absolute -bottom-10 left-4 w-64 bg-white rounded-2xl shadow-lg p-4">
-      <div className="text-xs text-slate-500">Live sample</div>
-      <div className="mt-1 font-semibold text-slate-800">
-        Kisumu Road Upgrade
-      </div>
-      <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-        <div className="bg-slate-50 p-2 rounded">Budget: KSh 23M</div>
-        <div className="bg-slate-50 p-2 rounded">Progress: 67%</div>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 const Navbar = () => (
   <header className="bg-white border-b">
