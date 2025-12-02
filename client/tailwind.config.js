@@ -5,7 +5,14 @@ module.exports = {
     "./design/**/*.html",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        brand: {
+          500: "#0b5fff",
+          600: "#084bdb",
+        },
+      },
+    },
   },
   plugins: [],
 };

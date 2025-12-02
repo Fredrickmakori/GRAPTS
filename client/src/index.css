@@ -9,17 +9,43 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
 }
 
 @layer base {
-  body { @apply bg-slate-50 text-slate-900 antialiased; }
-  a { @apply no-underline text-inherit; }
-  button { @apply cursor-pointer; }
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+  a {
+    @apply no-underline text-inherit;
+  }
+  button {
+    @apply cursor-pointer;
+  }
+}
+/* add near top of index.css */
+:root {
+  --brand-500: #0b5fff;
+  --brand-600: #084bdb;
+}
+
+/* tailwind utilities will cover most, but add small helpers */
+.video-hero {
+  min-height: 420px;
+  display: block;
+}
+
+/* small smooth parallax */
+.will-change-transform {
+  will-change: transform;
+  transition: transform 0.15s linear;
 }
