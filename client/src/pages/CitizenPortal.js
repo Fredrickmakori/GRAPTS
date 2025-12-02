@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../services/AuthContext";
 import { api } from "../services/api";
+import Navbar from "../components/Navbar";
 // Navbar is rendered globally by `Navigation` when a user is present
 import KpiCard from "../components/KpiCard";
 
