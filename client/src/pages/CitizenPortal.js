@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../services/AuthContext";
 import { api } from "../services/api";
-import "../styles/Dashboard.css";
+// Navbar is rendered globally by `Navigation` when a user is present
+import KpiCard from "../components/KpiCard";
 
-export const CitizenPortal = () => {
+const CitizenPortal = () => {
   const { token } = useAuth();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchPublicProjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const fetchPublicProjects = async () => {
@@ -26,39 +28,68 @@ export const CitizenPortal = () => {
   };
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-header">
-        <h1>Public Project Portal</h1>
-        <p>View Government Projects & Budgets</p>
-      </div>
+    <div className="min-h-screen bg-page-bg">
+      <Navbar />
+      <main className="max-w-7xl mx-auto p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold">Public Project Portal</h1>
+            <p className="text-sm text-slate-600">
+              View Government Projects & Budgets
+            </p>
+          </div>
+        </div>
 
-      <div className="dashboard-content">
-        <section className="citizen-section">
-          <h2>Active Projects</h2>
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <KpiCard title="Active Projects" value={projects.length} />
+          <KpiCard title="Total Budget" value="KSh 3.2B" />
+          <KpiCard title="Completed" value="14" />
+          <KpiCard title="Open Complaints" value="7" />
+        </div>
+
+        <section className="mt-6">
+          <h2 className="text-lg font-semibold mb-4">Active Projects</h2>
           {loading ? (
             <p>Loading...</p>
           ) : projects.length === 0 ? (
             <p>No active projects available.</p>
           ) : (
-            <div className="projects-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {projects.map((project) => (
-                <div key={project.id} className="citizen-project-card">
-                  <h3>{project.name}</h3>
-                  <p>{project.description}</p>
-                  <div className="project-stats">
-                    <div>
-                      <label>Total Budget</label>
-                      <p className="amount">
-                        ${(project.budget || 0).toLocaleString()}
+                <div
+                  key={project.id || project.name}
+                  className="bg-white rounded-lg p-4 shadow"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-1">
+                      <h3 className="font-semibold">{project.name}</h3>
+                      <p className="text-sm text-slate-600">
+                        {project.description}
                       </p>
+
+                      <div className="mt-3 grid grid-cols-3 gap-3 text-sm">
+                        <div>
+                          <div className="text-xs text-slate-500">Budget</div>
+                          <div className="font-medium">
+                            KSh {(project.budget || 0).toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-slate-500">Status</div>
+                          <div className="font-medium">{project.status}</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-slate-500">Location</div>
+                          <div className="font-medium">
+                            {project.location || "N/A"}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div>
-                      <label>Status</label>
-                      <p className="status">{project.status}</p>
-                    </div>
-                    <div>
-                      <label>Location</label>
-                      <p>{project.location || "N/A"}</p>
+                      <button className="px-3 py-2 bg-brand-500 text-white rounded">
+                        Report
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -66,7 +97,9 @@ export const CitizenPortal = () => {
             </div>
           )}
         </section>
-      </div>
+      </main>
     </div>
   );
 };
+
+export default CitizenPortal;

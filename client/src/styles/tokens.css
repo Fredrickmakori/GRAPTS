@@ -1,0 +1,18 @@
+:root {
+  --brand-blue: #0b5fff;
+  --brand-deep: #0a355a;
+  --accent-green: #22c55e;
+  --muted: #6b7280;
+  --card-bg: #ffffff;
+  --page-bg: #f8faff;
+  --radius-lg: 12px;
+}
+
+/* Utility helpers for non-Tailwind fallbacks */
+.container-centered {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}

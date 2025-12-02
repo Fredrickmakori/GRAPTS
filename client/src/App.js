@@ -10,9 +10,9 @@ import { initFirebase } from "./services/api";
 import { Navigation } from "./components/Navigation";
 import { LoginPage } from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
-import { AdminDashboard } from "./pages/AdminDashboard";
-import { AuditorDashboard } from "./pages/AuditorDashboard";
-import { CitizenPortal } from "./pages/CitizenPortal";
+import AdminDashboard from "./pages/AdminDashboard";
+import AuditorDashboard from "./pages/AuditorDashboard";
+import CitizenPortal from "./pages/CitizenPortal";
 import { ReportsPage } from "./pages/ReportsPage";
 import "./App.css";
 
