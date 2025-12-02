@@ -21,11 +21,28 @@
 }
 
 /* Small helpers that reference tokens so we can use them in markup */
-.text-brand-700 { color: var(--brand-700); }
-.text-brand-500 { color: var(--brand-500); }
-.bg-brand-500 { background-color: var(--brand-500); }
-.bg-brand-50 { background-color: var(--brand-50); }
-.text-muted { color: var(--muted); }
-.page-bg { background-color: var(--page-bg); }
-.card { background-color: var(--card-bg); border-radius: var(--radius-lg); }
-.brand-shadow { box-shadow: 0 6px 18px rgba(25,105,44,0.08); }
+.text-brand-700 {
+  color: var(--brand-700);
+}
+.text-brand-500 {
+  color: var(--brand-500);
+}
+.bg-brand-500 {
+  background-color: var(--brand-500);
+}
+.bg-brand-50 {
+  background-color: var(--brand-50);
+}
+.text-muted {
+  color: var(--muted);
+}
+.page-bg {
+  background-color: var(--page-bg);
+}
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+}
+.brand-shadow {
+  box-shadow: 0 6px 18px rgba(25, 105, 44, 0.08);
+}
