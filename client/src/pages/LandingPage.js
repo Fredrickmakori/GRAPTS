@@ -5,9 +5,8 @@ import {
   FiShield,
   FiUsers,
   FiCheckCircle,
-  FiSun,
-  FiMoon,
 } from "react-icons/fi";
+import Header from "../components/Header";
 import Logo from "../assets/logo.svg";
 
 /*
@@ -187,51 +186,19 @@ const LandingPageEnhanced = () => {
 
   return (
     <div className="min-h-screen bg-page-bg dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
-      {/* NAV */}
-      <header className="bg-white dark:bg-slate-800 border-b dark:border-slate-700 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-          <div className="flex items-center gap-3">
-            <img src={Logo} alt="GRAPTS" className="w-10 h-10" />
-            <div className="font-semibold text-lg">GRAPTS</div>
-          </div>
-          <div className="flex items-center gap-4">
-            <nav className="hidden md:flex gap-6 items-center">
-              <a href="#features" className="hover:text-brand-500">
-                Features
-              </a>
-              <a href="#how" className="hover:text-brand-500">
-                How it works
-              </a>
-              <a href="#counties" className="hover:text-brand-500">
-                Counties
-              </a>
-              <a href="/reports" className="hover:text-brand-500">
-                Reports
-              </a>
-            </nav>
-
-            {/* dark mode toggle */}
-            <button
-              aria-label="Toggle dark mode"
-              onClick={() => setDark((s) => !s)}
-              className="p-2 rounded-md bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
-            >
-              {dark ? (
-                <FiSun className="w-5 h-5 text-yellow-400" />
-              ) : (
-                <FiMoon className="w-5 h-5" />
-              )}
-            </button>
-
-            <a
-              href="/signup"
-              className="hidden sm:inline-flex items-center px-3 py-2 bg-brand-600 text-white rounded-md"
-            >
-              Get started
-            </a>
-          </div>
-        </div>
-      </header>
+      {/* HEADER */}
+      <Header
+        dark={dark}
+        setDark={setDark}
+        links={[
+          { href: "#features", label: "Features" },
+          { href: "#how", label: "How it works" },
+          { href: "#counties", label: "Counties" },
+          { href: "/reports", label: "Reports" },
+        ]}
+        ctaLabel="Get started"
+        ctaHref="/signup"
+      />
 
       {/* HERO with video background + poster fallback for mobile */}
       <section
