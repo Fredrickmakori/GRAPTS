@@ -1,6 +1,46 @@
 ﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "leaflet/dist/leaflet.css";
+@import "leaflet.markercluster/dist/MarkerCluster.css";
+@import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+
+/* Glass-card helper */
+.glass-card {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.02)
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Dark glass override */
+.dark .glass-card {
+  background: linear-gradient(
+    180deg,
+    rgba(12, 14, 18, 0.55),
+    rgba(8, 10, 12, 0.45)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Small helpers */
+.kpi-anim {
+  transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.kpi-anim:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Fix map height */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
 
 /* Reset + base styles */
 * {

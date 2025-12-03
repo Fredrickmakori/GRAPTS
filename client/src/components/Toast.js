@@ -1,16 +1,14 @@
+// src/components/Toast.js
 import React, { createContext, useContext, useState, useCallback } from "react";
 
 const ToastContext = createContext(null);
-
-export const useToast = () => {
-  return useContext(ToastContext);
-};
+export const useToast = () => useContext(ToastContext);
 
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   const show = useCallback(
-    (message, { timeout = 4000, type = "info" } = {}) => {
+    (message, { timeout = 3000, type = "info" } = {}) => {
       const id = Date.now().toString();
       setToasts((t) => [...t, { id, message, type }]);
       setTimeout(() => {
@@ -20,24 +18,20 @@ export const ToastProvider = ({ children }) => {
     []
   );
 
-  const value = { show };
-
   return (
-    <ToastContext.Provider value={value}>
+    <ToastContext.Provider value={{ show }}>
       {children}
-      <div
-        aria-live="polite"
-        className="fixed right-4 bottom-4 z-50 flex flex-col gap-2"
-      >
+
+      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-3">
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`max-w-sm w-full px-4 py-3 rounded shadow-md text-sm ${
+            className={`px-4 py-3 rounded-lg glass-card neon-border animate-slide-in text-white ${
               t.type === "error"
-                ? "bg-red-50 text-red-800"
+                ? "border-red-500/40 text-red-300"
                 : t.type === "success"
-                ? "bg-green-50 text-green-800"
-                : "bg-slate-50 text-slate-800"
+                ? "border-green-500/40 text-green-300"
+                : "text-cyan-300"
             }`}
           >
             {t.message}

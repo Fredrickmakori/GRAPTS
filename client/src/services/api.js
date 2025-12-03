@@ -4,8 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 
-// Default Firebase config (falls back to environment variables).
-// Provided config values (can be overridden via .env)
+// Default Firebase config
 const DEFAULT_FIREBASE_CONFIG = {
   apiKey:
     process.env.REACT_APP_FIREBASE_API_KEY ||
@@ -42,15 +41,10 @@ export const initFirebase = () => {
 
   const app = initializeApp(DEFAULT_FIREBASE_CONFIG);
   firebaseApp = app;
+
   try {
-    // Analytics only available in browser environments
-    if (typeof window !== "undefined") {
-      getAnalytics(app);
-    }
-  } catch (err) {
-    // ignore analytics initialization errors (not critical)
-    // console.warn('Analytics not initialized', err);
-  }
+    if (typeof window !== "undefined") getAnalytics(app);
+  } catch (_) {}
 
   firebaseAuth = getAuth(app);
   firebaseDb = getFirestore(app);
@@ -64,60 +58,106 @@ export const initFirebase = () => {
   };
 };
 
+// -----------------------------
+// BASE API URL
+// -----------------------------
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:4000/api";
+
+// -----------------------------
+// INDIVIDUAL FUNCTION EXPORTS
+// -----------------------------
+
+export async function fetchProjects(token) {
+  const res = await fetch(`${BASE_URL}/projects`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.json();
+}
+
+export async function fetchPublicProjects() {
+  const res = await fetch(`${BASE_URL}/projects/public`);
+  return res.json();
+}
+
+export async function fetchProjectById(id, token) {
+  const res = await fetch(`${BASE_URL}/projects/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.json();
+}
+
+export async function createProject(data, token) {
+  const res = await fetch(`${BASE_URL}/projects`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
+
+export async function fetchMilestones(projectId, token) {
+  const res = await fetch(`${BASE_URL}/projects/${projectId}/milestones`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.json();
+}
+
+export async function verifyMilestone(projectId, milestoneId, token) {
+  const res = await fetch(`${BASE_URL}/audits/verify`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ projectId, milestoneId }),
+  });
+  return res.json();
+}
+
+export async function fetchDisbursements(projectId, token) {
+  const res = await fetch(`${BASE_URL}/projects/${projectId}/disbursements`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.json();
+}
+
+export async function fetchAuditLogs(token, params = {}) {
+  const query = new URLSearchParams(params).toString();
+  const res = await fetch(`${BASE_URL}/audit-logs?${query}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.json();
+}
+
+export async function fetchReports(type, token) {
+  const res = await fetch(`${BASE_URL}/reports/${type}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.json();
+}
+
+export async function fetchBudgetReport(token) {
+  const res = await fetch(`${BASE_URL}/reports/budget`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.json();
+}
+
+// -----------------------------
+// OPTIONAL: RETAIN api OBJECT
+// -----------------------------
 export const api = {
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:4000/api",
-
-  async fetchProjects(token) {
-    const response = await fetch(`${this.baseURL}/projects`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.json();
-  },
-
-  async createProject(data, token) {
-    const response = await fetch(`${this.baseURL}/projects`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-    return response.json();
-  },
-
-  async fetchMilestones(projectId, token) {
-    const response = await fetch(
-      `${this.baseURL}/projects/${projectId}/milestones`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.json();
-  },
-
-  async fetchDisbursements(projectId, token) {
-    const response = await fetch(
-      `${this.baseURL}/projects/${projectId}/disbursements`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.json();
-  },
-
-  async fetchAuditLogs(token, params = {}) {
-    const query = new URLSearchParams(params).toString();
-    const response = await fetch(`${this.baseURL}/audit-logs?${query}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.json();
-  },
-
-  async fetchReports(type, token) {
-    const response = await fetch(`${this.baseURL}/reports/${type}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.json();
-  },
+  fetchProjects,
+  fetchPublicProjects,
+  fetchProjectById,
+  createProject,
+  fetchMilestones,
+  verifyMilestone,
+  fetchDisbursements,
+  fetchAuditLogs,
+  fetchReports,
+  fetchBudgetReport,
 };

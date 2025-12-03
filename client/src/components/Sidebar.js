@@ -1,51 +1,39 @@
+// src/components/Sidebar.js
 import React from "react";
+import {
+  FiHome,
+  FiMap,
+  FiFileText,
+  FiSettings,
+  FiLayers,
+} from "react-icons/fi";
 
-const Sidebar = ({ collapsed, className }) => {
+const Item = ({ icon, label, link }) => (
+  <a
+    href={link}
+    className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 neon-hover transition"
+  >
+    {icon}
+    <span>{label}</span>
+  </a>
+);
+
+const Sidebar = ({ collapsed = false, className }) => {
   return (
     <aside
-      className={`bg-white border-r ${className || ""}`}
-      aria-label="Sidebar"
+      className={`h-full glass-card border-r border-white/10 p-4 ${className}`}
     >
-      <div className="w-64 px-4 py-6">
-        <nav className="space-y-2">
-          <a
-            href="/admin"
-            className="block px-3 py-2 rounded hover:bg-slate-50"
-          >
-            Overview
-          </a>
-          <a
-            href="/admin/projects"
-            className="block px-3 py-2 rounded hover:bg-slate-50"
-          >
-            Projects
-          </a>
-          <a
-            href="/admin/disbursements"
-            className="block px-3 py-2 rounded hover:bg-slate-50"
-          >
-            Disbursements
-          </a>
-          <a
-            href="/admin/issues"
-            className="block px-3 py-2 rounded hover:bg-slate-50"
-          >
-            Issues
-          </a>
-          <a
-            href="/admin/reports"
-            className="block px-3 py-2 rounded hover:bg-slate-50"
-          >
-            Reports
-          </a>
-          <a
-            href="/admin/settings"
-            className="block px-3 py-2 rounded hover:bg-slate-50"
-          >
-            Settings
-          </a>
-        </nav>
-      </div>
+      <nav className="space-y-2 text-sm">
+        <Item icon={<FiHome />} label="Overview" link="/admin" />
+        <Item icon={<FiLayers />} label="Projects" link="/admin/projects" />
+        <Item
+          icon={<FiMap />}
+          label="Disbursements"
+          link="/admin/disbursements"
+        />
+        <Item icon={<FiFileText />} label="Issues" link="/admin/issues" />
+        <Item icon={<FiSettings />} label="Settings" link="/admin/settings" />
+      </nav>
     </aside>
   );
 };

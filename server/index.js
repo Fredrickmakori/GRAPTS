@@ -13,7 +13,15 @@ const { authMiddleware } = require("./middleware/auth");
 const uploadsRouter = require("./routes/uploads");
 
 const app = express();
-app.use(cors());
+
+// CORS configuration to allow credentials and specific origins
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 
 // Health check

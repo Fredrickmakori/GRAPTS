@@ -1,14 +1,10 @@
 // client/src/pages/LandingPageEnhanced.jsx
 import React, { useEffect, useRef, useState } from "react";
-import {
-  FiBarChart2,
-  FiShield,
-  FiUsers,
-  FiCheckCircle,
-} from "react-icons/fi";
-import Header from "../components/Header";
+import { FiBarChart2, FiShield, FiUsers, FiCheckCircle } from "react-icons/fi";
+import Navbar from "../components/Navbar";
 import Logo from "../assets/logo.svg";
-
+import Header from "../components/Header";
+import { Link } from "react-router-dom";
 /*
   Enhanced landing page:
   - Animated counters (on-scroll)
@@ -187,18 +183,6 @@ const LandingPageEnhanced = () => {
   return (
     <div className="min-h-screen bg-page-bg dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
       {/* HEADER */}
-      <Header
-        dark={dark}
-        setDark={setDark}
-        links={[
-          { href: "#features", label: "Features" },
-          { href: "#how", label: "How it works" },
-          { href: "#counties", label: "Counties" },
-          { href: "/reports", label: "Reports" },
-        ]}
-        ctaLabel="Get started"
-        ctaHref="/signup"
-      />
 
       {/* HERO with video background + poster fallback for mobile */}
       <section
@@ -250,7 +234,7 @@ const LandingPageEnhanced = () => {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
-                  href="/signup"
+                  href="/login"
                   className="px-5 py-3 bg-brand-500 text-white rounded-md font-semibold shadow hover:bg-brand-600"
                 >
                   Create account
@@ -261,9 +245,13 @@ const LandingPageEnhanced = () => {
                 >
                   See features
                 </a>
+                <a
+                  href="/login"
+                  className="hidden sm:inline-flex items-center px-3 py-2 bg-brand-600 text-white rounded-md"
+                >
+                  Get started
+                </a>
               </div>
-
-              {/* Animated counters */}
               <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
                 <div className="p-3 bg-white/90 rounded-lg text-center">
                   <div
@@ -455,7 +443,7 @@ const LandingPageEnhanced = () => {
           </div>
           <div>
             <a
-              href="/signup"
+              href="/login"
               className="px-4 py-2 bg-brand-600 text-white rounded-md"
             >
               Create account

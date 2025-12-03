@@ -67,6 +67,21 @@ router.get("/projects", authMiddleware, async (req, res) => {
   }
 });
 
+// Get public projects (no authentication required)
+router.get("/projects/public", async (req, res) => {
+  try {
+    const snapshot = await db.collection("projects").get();
+    const projects = [];
+    snapshot.forEach((doc) => {
+      projects.push({ id: doc.id, ...doc.data() });
+    });
+
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Get a single project by ID
 router.get("/projects/:id", authMiddleware, async (req, res) => {
   try {

@@ -2,3 +2,107 @@
   min-height: 100vh;
   background-color: #f5f6fa;
 }
+.nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  transition: 0.25s;
+}
+.nav-link:hover {
+  color: #fff;
+}
+
+.drawer-link {
+  display: block;
+  padding: 0.6rem;
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 0.5rem;
+  transition: 0.2s;
+}
+.drawer-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-down {
+  animation: fade-down 0.25s ease-out;
+}
+
+/* Glass card utility */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+/* NEON THEME UTILITIES */
+:root {
+  --neon: #0ff;
+  --neon-soft: rgba(0, 255, 255, 0.4);
+}
+
+.neon-border {
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.neon-hover:hover {
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.neon-glow {
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+}
+
+.text-brand-neon {
+  color: #00eaff;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-slide-in {
+  animation: slide-in 0.4s ease-out;
+}
+
+@keyframes scale {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-scale {
+  animation: scale 0.25s ease-out;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fade {
+  animation: fade 0.2s linear;
+}

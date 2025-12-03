@@ -1,18 +1,11 @@
+// src/components/FileUpload.js
 import React, { useState } from "react";
 import { useAuth } from "../services/AuthContext";
 
-export const FileUpload = ({
-  projectId = null,
-  milestoneId = null,
-  onUploaded,
-}) => {
+export const FileUpload = ({ projectId, milestoneId, onUploaded }) => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const { token } = useAuth();
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
 
   const upload = async () => {
     if (!file) return;
@@ -20,7 +13,8 @@ export const FileUpload = ({
 
     const reader = new FileReader();
     reader.onload = async (ev) => {
-      const base64 = ev.target.result; // includes data:type;base64,
+      const base64 = ev.target.result;
+
       try {
         const res = await fetch(
           `${
@@ -41,10 +35,11 @@ export const FileUpload = ({
             }),
           }
         );
+
         const data = await res.json();
         setUploading(false);
         setFile(null);
-        if (onUploaded) onUploaded(data);
+        onUploaded?.(data);
       } catch (err) {
         console.error("Upload error", err);
         setUploading(false);
@@ -55,10 +50,19 @@ export const FileUpload = ({
   };
 
   return (
-    <div className="file-upload">
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={upload} disabled={!file || uploading}>
-        {uploading ? "Uploading..." : "Upload"}
+    <div className="glass-card neon-border p-4 rounded-lg text-white">
+      <input
+        type="file"
+        onChange={(e) => setFile(e.target.files[0])}
+        className="mb-3"
+      />
+
+      <button
+        onClick={upload}
+        disabled={!file || uploading}
+        className="px-4 py-2 bg-brand-600 hover:bg-brand-500 rounded shadow-md"
+      >
+        {uploading ? "Uploading…" : "Upload"}
       </button>
     </div>
   );

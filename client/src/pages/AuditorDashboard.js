@@ -1,86 +1,67 @@
-import React, { useState, useEffect } from "react";
-import { useAuth } from "../services/AuthContext";
-import { api } from "../services/api";
+// src/pages/AuditorDashboard.js
+import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import ProjectTable from "../components/ProjectTable";
 import Modal from "../components/Modal";
+import { ToastProvider, useToast } from "../components/Toast";
+import { fetchProjects, verifyMilestone } from "../services/api"; // implement these
 
-const AuditorDashboard = () => {
-  const { user, token } = useAuth();
-  const [auditLogs, setAuditLogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function AuditorDashboard() {
+  return (
+    <ToastProvider>
+      <AuditorInner />
+    </ToastProvider>
+  );
+}
+
+function AuditorInner() {
+  const [projects, setProjects] = useState([]);
+  const [selected, setSelected] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const { show } = useToast();
 
   useEffect(() => {
-    fetchAuditLogs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+    fetchProjects()
+      .then(setProjects)
+      .catch((err) => {
+        console.error(err);
+        show("Failed to load projects", { type: "error" });
+      });
+  }, [show]);
 
-  const fetchAuditLogs = async () => {
+  function openVerify(p) {
+    setSelected(p);
+    setModalOpen(true);
+  }
+
+  async function handleApprove() {
     try {
-      const data = await api.fetchAuditLogs(token, { limit: 50 });
-      setAuditLogs(Array.isArray(data) ? data : []);
+      await verifyMilestone(selected.id); // backend action
+      show("Milestone approved", { type: "success" });
+      setModalOpen(false);
+      // refresh
+      const nxt = await fetchProjects();
+      setProjects(nxt);
     } catch (err) {
-      console.error("Error fetching audit logs:", err);
+      console.error(err);
+      show("Verification failed", { type: "error" });
     }
-    setLoading(false);
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-page-bg">
-      <div className="flex">
-        <div className="hidden md:block">
+    <div className="min-h-screen bg-slate-900 text-white">
+      <Navbar />
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 grid lg:grid-cols-6 gap-6">
+        <div className="lg:col-span-1">
           <Sidebar />
         </div>
-        <main className="flex-1 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-semibold">Auditor Dashboard</h1>
-              <p className="text-sm text-slate-600">
-                Audit Logs & Verification
-              </p>
-            </div>
-            <div>
-              <button
-                onClick={() => setModalOpen(true)}
-                className="px-4 py-2 bg-brand-500 text-white rounded"
-              >
-                Verify Milestones
-              </button>
-            </div>
-          </div>
 
-          <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <section className="lg:col-span-2 bg-white rounded-lg p-4 shadow">
-              <h2 className="font-semibold mb-4">Verification Queue</h2>
-              <p className="text-sm text-slate-600">
-                Tasks awaiting verification will appear here.
-              </p>
-            </section>
+        <main className="lg:col-span-5 space-y-6">
+          <h2 className="text-xl font-semibold">Verification Queue</h2>
 
-            <aside className="bg-white rounded-lg p-4 shadow">
-              <h3 className="font-semibold">Recent Audit Logs</h3>
-              {loading ? (
-                <p className="text-sm">Loading...</p>
-              ) : auditLogs.length === 0 ? (
-                <p className="text-sm">No audit logs available.</p>
-              ) : (
-                <ul className="mt-3 space-y-2 text-sm">
-                  {auditLogs.map((log) => (
-                    <li key={log.id} className="border rounded p-2">
-                      <div className="text-xs text-slate-500">
-                        {new Date(log.timestamp).toLocaleString()}
-                      </div>
-                      <div className="font-medium">
-                        {log.action} — {log.entity}
-                      </div>
-                      <div className="text-xs text-slate-600">
-                        by {log.userId} • {log.hash?.substring(0, 8)}...
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </aside>
+          <div>
+            <ProjectTable projects={projects} onView={(p) => openVerify(p)} />
           </div>
         </main>
       </div>
@@ -90,13 +71,30 @@ const AuditorDashboard = () => {
         onClose={() => setModalOpen(false)}
         title="Verify Milestone"
       >
-        <p className="text-sm">
-          Verification UI will allow viewing evidence and recording approval
-          decisions.
-        </p>
+        <div>
+          <div className="text-sm mb-3">
+            Project: <strong>{selected?.name}</strong>
+          </div>
+          <div className="text-sm text-slate-300 mb-3">
+            Evidence preview and description would appear here.
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              onClick={handleApprove}
+              className="px-4 py-2 bg-cyan-500 rounded text-black font-semibold"
+            >
+              Approve
+            </button>
+            <button
+              onClick={() => setModalOpen(false)}
+              className="px-4 py-2 bg-white/5 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );
-};
-
-export default AuditorDashboard;
+}
