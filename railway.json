@@ -1,0 +1,38 @@
+{
+  "project": {
+    "name": "GRAPTS",
+    "repository": "https://github.com/Fredrickmakori/GRAPTS"
+  },
+  "services": [
+    {
+      "name": "client",
+      "path": "client",
+      "plugin": "static",
+      "build": {
+        "installCommand": "npm install",
+        "buildCommand": "npm run build"
+      },
+      "start": {
+        "command": "npm start"
+      },
+      "env": {
+        "REACT_APP_API_URL": "https://<YOUR_SERVER_URL_OR_RAILWAY_SERVICE>/api"
+      }
+    },
+    {
+      "name": "server",
+      "path": "server",
+      "plugin": "node",
+      "build": {
+        "installCommand": "npm install"
+      },
+      "start": {
+        "command": "node index.js"
+      },
+      "env": {
+        "PORT": "4000",
+        "CLIENT_URL": "https://<YOUR_CLIENT_URL_OR_RAILWAY_SERVICE>"
+      }
+    }
+  ]
+}

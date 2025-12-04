@@ -1,0 +1,15 @@
+{
+  "project": "GRAPTS",
+  "templates": {
+    "client": [
+      { "key": "REACT_APP_API_URL", "value": "https://<YOUR_SERVER_URL>/api", "required": true },
+      { "key": "REACT_APP_FIREBASE_API_KEY", "value": "", "required": true }
+    ],
+    "server": [
+      { "key": "PORT", "value": "4000", "required": false },
+      { "key": "CLIENT_URL", "value": "https://<YOUR_CLIENT_URL>", "required": true },
+      { "key": "FIREBASE_PRIVATE_KEY", "value": "", "required": true },
+      { "key": "FIREBASE_CLIENT_EMAIL", "value": "", "required": true }
+    ]
+  }
+}
