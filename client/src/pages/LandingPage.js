@@ -1,10 +1,6 @@
 // client/src/pages/LandingPageEnhanced.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { FiBarChart2, FiShield, FiUsers, FiCheckCircle } from "react-icons/fi";
-import Navbar from "../components/Navbar";
-import Logo from "../assets/logo.svg";
-import Header from "../components/Header";
-import { Link } from "react-router-dom";
+import { FiBarChart2, FiShield, FiUsers } from "react-icons/fi";
 /*
   Enhanced landing page:
   - Animated counters (on-scroll)
@@ -123,7 +119,7 @@ const useAnimatedCounter = (ref, target, duration = 1500) => {
    Main component
    ------------------------- */
 const LandingPageEnhanced = () => {
-  const [dark, setDark] = useState(() => {
+  const [dark] = useState(() => {
     // read stored preference or prefer-color-scheme
     const stored =
       typeof window !== "undefined" && localStorage.getItem("grapts_dark");
@@ -172,13 +168,6 @@ const LandingPageEnhanced = () => {
     window.addEventListener("scroll", handle, { passive: true });
     return () => window.removeEventListener("scroll", handle);
   }, []);
-
-  // format large KSh number for display
-  const formatMoney = (n) => {
-    if (n >= 1e9) return `KSh ${(n / 1e9).toFixed(1)}B`;
-    if (n >= 1e6) return `KSh ${(n / 1e6).toFixed(1)}M`;
-    return `KSh ${n.toLocaleString()}`;
-  };
 
   return (
     <div className="min-h-screen bg-page-bg dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">

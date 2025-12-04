@@ -10,7 +10,7 @@ export const ReportsPage = () => {
 
   useEffect(() => {
     fetchBudgetReport();
-  }, [token]);
+  }, [token, fetchBudgetReport]);
 
   const fetchBudgetReport = async () => {
     try {

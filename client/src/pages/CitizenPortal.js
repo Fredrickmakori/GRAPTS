@@ -1,6 +1,5 @@
 // src/pages/CitizenPortal.js
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import MapWrapper from "../components/MapWrapper";
 import { ToastProvider, useToast } from "../components/Toast";
 import { fetchPublicProjects } from "../services/api"; // implement to return public projects
