@@ -9,18 +9,17 @@ export const ReportsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchBudgetReport = async () => {
+      try {
+        const data = await api.fetchReports("budget", token);
+        setBudgetReport(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error fetching report:", err);
+      }
+      setLoading(false);
+    };
     fetchBudgetReport();
-  }, [token, fetchBudgetReport]);
-
-  const fetchBudgetReport = async () => {
-    try {
-      const data = await api.fetchReports("budget", token);
-      setBudgetReport(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Error fetching report:", err);
-    }
-    setLoading(false);
-  };
+  }, [token]);
 
   return (
     <div className="dashboard">
