@@ -31,7 +31,7 @@
       },
       "env": {
         "PORT": "4000",
-        "CLIENT_URL": "https://<YOUR_CLIENT_URL_OR_RAILWAY_SERVICE>"
+        "CLIENT_URL": "https://grapts.vercel.app"
       }
     }
   ]

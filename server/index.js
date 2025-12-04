@@ -12,6 +12,8 @@ const reportsRouter = require("./routes/reports");
 const { authMiddleware } = require("./middleware/auth");
 const uploadsRouter = require("./routes/uploads");
 
+const path = require("path");
+
 const app = express();
 
 // CORS configuration to allow credentials and specific origins
@@ -23,6 +25,12 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
+// Serve React build (if present). API routes take precedence; static files served in production.
+const clientBuildPath = path.join(__dirname, "..", "client", "build");
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(clientBuildPath));
+}
 
 // Health check
 app.get("/api/ping", (req, res) => {
