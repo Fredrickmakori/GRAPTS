@@ -4,11 +4,10 @@
   "description": "Government Resource Allocation & Project Tracking System",
   "private": true,
   "scripts": {
-    "start": "server/index.js",
     "install:all": "npm install && cd client && npm install && cd ../server && npm install && cd ..",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "cd client && npm start",
-    "dev:server": "cd server && node index.js",
+    "start": "cd server && node index.js",
     "build": "cd client && npm run build",
     "build:full": "npm install:all && npm run build",
     "test": "cd client && npm test"
