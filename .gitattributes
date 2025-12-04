@@ -1,0 +1,16 @@
+# Enforce LF line endings for text files and leave binaries alone
+* text=auto eol=lf
+
+# Match common binary file types to avoid conversion
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.gz binary
+*.tgz binary
+*.pdf binary
+
+# Node modules (if present) should be treated as binary
+node_modules/** -text
