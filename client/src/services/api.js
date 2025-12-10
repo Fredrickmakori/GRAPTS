@@ -6,22 +6,32 @@ import { getAnalytics } from "firebase/analytics";
 
 // Default Firebase config (CRA uses process.env.REACT_APP_*)
 const DEFAULT_FIREBASE_CONFIG = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyCnJQjcRs2XtJZuJcN3KtOg75K6RM3Q2fM",
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "grapts-5183e.firebaseapp.com",
+  apiKey:
+    process.env.REACT_APP_FIREBASE_API_KEY ||
+    "AIzaSyCnJQjcRs2XtJZuJcN3KtOg75K6RM3Q2fM",
+  authDomain:
+    process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ||
+    "grapts-5183e.firebaseapp.com",
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "grapts-5183e",
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "grapts-5183e.firebasestorage.app",
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "576756303354",
-  appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:576756303354:web:202e8af5499d4560345043",
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-LVMS63YGB1",
+  storageBucket:
+    process.env.REACT_APP_FIREBASE_STORAGE_BUCKET ||
+    "grapts-5183e.firebasestorage.app",
+  messagingSenderId:
+    process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "576756303354",
+  appId:
+    process.env.REACT_APP_FIREBASE_APP_ID ||
+    "1:576756303354:web:202e8af5499d4560345043",
+  measurementId:
+    process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-LVMS63YGB1",
 };
 
 // Debug: show which API key was bundled (remove in production)
 try {
-  if (process.env.NODE_ENV === 'development') {
-    const key = DEFAULT_FIREBASE_CONFIG.apiKey || '';
-    const visible = key ? `***${key.slice(-6)}` : 'undefined';
+  if (process.env.NODE_ENV === "development") {
+    const key = DEFAULT_FIREBASE_CONFIG.apiKey || "";
+    const visible = key ? `***${key.slice(-6)}` : "undefined";
     // eslint-disable-next-line no-console
-    console.info('Firebase API Key (client) =', visible);
+    console.info("Firebase API Key (client) =", visible);
   }
 } catch (e) {}
 
@@ -62,6 +72,64 @@ export const initFirebase = () => {
 // BASE API URL
 // -----------------------------
 const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:4000/api";
+
+// Runtime checks: validate that important envs are present and warn with masked output.
+export function checkRuntimeConfig() {
+  try {
+    if (typeof window === "undefined") return;
+
+    const missing = [];
+    const envMap = {
+      REACT_APP_FIREBASE_API_KEY: process.env.REACT_APP_FIREBASE_API_KEY,
+      REACT_APP_FIREBASE_AUTH_DOMAIN:
+        process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+      REACT_APP_FIREBASE_PROJECT_ID: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+      REACT_APP_FIREBASE_APP_ID: process.env.REACT_APP_FIREBASE_APP_ID,
+      REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+    };
+
+    Object.entries(envMap).forEach(([k, v]) => {
+      if (!v) missing.push(k);
+    });
+
+    // Mask API key for logs
+    const apiKey =
+      envMap.REACT_APP_FIREBASE_API_KEY || DEFAULT_FIREBASE_CONFIG.apiKey || "";
+    const maskedKey = apiKey ? `***${apiKey.slice(-6)}` : "undefined";
+
+    if (missing.length > 0) {
+      // show concise guidance
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[GRAPTS] Runtime config: missing envs: ${missing.join(
+          ", "
+        )}. Firebase may fail in production.`
+      );
+      // eslint-disable-next-line no-console
+      console.info(`[GRAPTS] Firebase API Key (masked): ${maskedKey}`);
+    } else {
+      // eslint-disable-next-line no-console
+      console.info(
+        `[GRAPTS] Firebase config looks present. API Key (masked): ${maskedKey}`
+      );
+    }
+
+    // Warn if using localhost API URL in production builds
+    if (
+      process.env.NODE_ENV === "production" &&
+      BASE_URL.includes("localhost")
+    ) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        "[GRAPTS] Running in production but `REACT_APP_API_URL` is pointing to localhost. This may be incorrect."
+      );
+    }
+  } catch (e) {
+    // ignore logging failures
+  }
+}
+
+export { BASE_URL };
 
 // -----------------------------
 // INDIVIDUAL FUNCTION EXPORTS

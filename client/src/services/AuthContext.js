@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { initFirebase } from "./api";
+import { initFirebase, checkRuntimeConfig, BASE_URL } from "./api";
 import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
@@ -21,20 +21,21 @@ export const AuthProvider = ({ children }) => {
   const { auth } = initFirebase();
 
   useEffect(() => {
+    // Run runtime checks to detect missing envs and provide helpful logs
+    try {
+      if (typeof window !== "undefined") checkRuntimeConfig();
+    } catch (e) {}
     // Move async work into inner function to avoid making the effect callback async
     const init = async () => {
       const bootstrap = async () => {
         if (!token) return;
         setLoading(true);
         try {
-          const res = await fetch(
-            `${process.env.REACT_APP_API_URL || "http://localhost:4000/api"}/auth/login`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ idToken: token }),
-            }
-          );
+          const res = await fetch(`${BASE_URL}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken: token }),
+          });
           if (!res.ok) throw new Error("Token validation failed");
           const data = await res.json();
           setUser(data.user);
@@ -76,7 +77,10 @@ export const AuthProvider = ({ children }) => {
       const idToken = await cred.user.getIdToken();
 
       // Exchange ID token with backend to get user record (role, displayName)
-      const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:4000/api"}/auth/login`,
+      const res = await fetch(
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:4000/api"
+        }/auth/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -131,7 +135,10 @@ export const AuthProvider = ({ children }) => {
       const idToken = await cred.user.getIdToken();
 
       // Exchange ID token with backend to get user record (role, displayName)
-      const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:4000/api"}/auth/login`,
+      const res = await fetch(
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:4000/api"
+        }/auth/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
