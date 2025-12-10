@@ -16,7 +16,7 @@ export const FileUpload = ({ projectId, milestoneId, onUploaded }) => {
       const base64 = ev.target.result;
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:4000/api"}/upload`,
+        const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:4000/api"}/upload`,
           {
             method: "POST",
             headers: {

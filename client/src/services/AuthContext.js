@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         try {
           const res = await fetch(
-            `${import.meta.env.VITE_API_URL || "http://localhost:4000/api"}/auth/login`,
+            `${process.env.REACT_APP_API_URL || "http://localhost:4000/api"}/auth/login`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
       const idToken = await cred.user.getIdToken();
 
       // Exchange ID token with backend to get user record (role, displayName)
-      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:4000/api"}/auth/login`,
+      const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:4000/api"}/auth/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -131,7 +131,7 @@ export const AuthProvider = ({ children }) => {
       const idToken = await cred.user.getIdToken();
 
       // Exchange ID token with backend to get user record (role, displayName)
-      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:4000/api"}/auth/login`,
+      const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:4000/api"}/auth/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

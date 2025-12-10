@@ -4,22 +4,20 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 
-// Default Firebase config (use Vite env vars: import.meta.env.VITE_*)
+// Default Firebase config (CRA uses process.env.REACT_APP_*)
 const DEFAULT_FIREBASE_CONFIG = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyCnJQjcRs2XtJZuJcN3KtOg75K6RM3Q2fM",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "grapts-5183e.firebaseapp.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "grapts-5183e",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "grapts-5183e.firebasestorage.app",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "576756303354",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:576756303354:web:202e8af5499d4560345043",
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-LVMS63YGB1",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyCnJQjcRs2XtJZuJcN3KtOg75K6RM3Q2fM",
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "grapts-5183e.firebaseapp.com",
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "grapts-5183e",
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "grapts-5183e.firebasestorage.app",
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "576756303354",
+  appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:576756303354:web:202e8af5499d4560345043",
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-LVMS63YGB1",
 };
 
 // Debug: show which API key was bundled (remove in production)
 try {
-  // Only log in development builds
-  if (import.meta.env.DEV) {
-    // Don't print full key in logs in CI; show last 6 chars for verification
+  if (process.env.NODE_ENV === 'development') {
     const key = DEFAULT_FIREBASE_CONFIG.apiKey || '';
     const visible = key ? `***${key.slice(-6)}` : 'undefined';
     // eslint-disable-next-line no-console
@@ -63,7 +61,7 @@ export const initFirebase = () => {
 // -----------------------------
 // BASE API URL
 // -----------------------------
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:4000/api";
 
 // -----------------------------
 // INDIVIDUAL FUNCTION EXPORTS
