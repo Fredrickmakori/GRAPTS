@@ -126,6 +126,14 @@ export const LoginPage = () => {
               <button type="submit" className="login-btn login-btn-success">
                 Create Account
               </button>
+
+              <button
+                type="button"
+                onClick={handleGoogle}
+                className="login-btn login-btn-secondary"
+              >
+                <FcGoogle className="google-icon" /> Continue with Google
+              </button>
             </form>
           )}
 
