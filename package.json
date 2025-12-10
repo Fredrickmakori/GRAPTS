@@ -12,7 +12,7 @@
     "start": "cd server && node index.js",
     "prebuild": "cd client && npm install",
     "build": "cd client && npm install && npm run build",
-    "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+    "postinstall": "node ./scripts/postinstall.js",
     "build:full": "npm install:all && npm run build",
     "test": "cd client && npm test"
   },
