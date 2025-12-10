@@ -1,0 +1,16 @@
+# Reduce Docker / build context size
+node_modules
+.git
+dist
+build
+client/node_modules
+server/node_modules
+npm-debug.log*
+Dockerfile*
+.dockerignore
+.vscode
+.idea
+*.log
+.env
+*.env
+client/build

@@ -9,6 +9,7 @@ const milestonesRouter = require("./routes/milestones");
 const disbursementsRouter = require("./routes/disbursements");
 const issuesRouter = require("./routes/issues");
 const reportsRouter = require("./routes/reports");
+const aiRouter = require("./routes/ai");
 const { authMiddleware } = require("./middleware/auth");
 const uploadsRouter = require("./routes/uploads");
 
@@ -91,6 +92,7 @@ app.use("/api", disbursementsRouter);
 app.use("/api", issuesRouter);
 app.use("/api", reportsRouter);
 app.use("/api", uploadsRouter);
+app.use("/api/ai", aiRouter);
 
 // Error handler
 app.use((err, req, res, next) => {

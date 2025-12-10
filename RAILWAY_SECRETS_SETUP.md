@@ -8,11 +8,13 @@
 4. Add a new variable with the following details:
 
 ### Variable Name
+
 ```
 FIREBASE_SERVICE_ACCOUNT
 ```
 
 ### Variable Value (base64-encoded service account)
+
 ```
 ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAiZ3JhcHRzLTUxODNlIiwKICAicHJpdmF0ZV9rZXlfaWQiOiAiNDM4ZDc1YWU4MzcwYjc5MmEzZGRkYTg3YjlmZWFmYWRiMjA3YjVjNyIsCiAgInByaXZhdGVfa2V5IjogIi0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuTUlJRXZBSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NCS1l3Z2dTaUFnRUFBb0lCQVFDSFoxcStTd2dGT0tFR1xuZHpvc2JiaFBxODQ4cXIxUzJKeDZ1TGNnazNFZ2UyOWdnRXJqUnhoSXQyczdaR1B3d0VwNm5lN3p5QnpzRkN6R1xuTXo4SnV3MGQ0alJYZjEwWFpiM2tEakJEVExzRWhncmdvM21paHJnRUswbzNQandXbXRxRk9PM2d6V0RaWEpXWFxuT3gwQWQ0dmttYit6ME90cFNHUG5GL1RUb0xKSVlpYkVIdHh1eldFTGsrZmwwSUdqT2lBam05NUhZaWV0UXBHM1xuUzhMazdLMnVISVhiV2l5TElINlJLYm13aWRUaHJpMjdBaTBLQ2pMOGJQR2Y5eituMDhkSUM0SWhrRUhSM3BIbFxuTXFHelBjN2MwUmt6NXowSG8zckUzUk1QWXZRVTU3Q081cW55RjhjMlNyWVp6akhPSGEzcDhuMUVBdXppOThKaFxuM3dlYS9mNHZBZ01CQUFFQ2dnRUFET1pSMGFBTkhsdlNYcUlmbTNtUWZnTnBYVkNsUXk0VHcraC9ocHFTS256WFxuK2xYK21UK3hGcExNY09PdGljYU9hNFFYaUNGR2NCd2FWa3hoSmtJc0pWVVdZZUV6TXpZOXhqZmlPZ0RBTHRXK1xuVmZMSjIxODBzWlF2MGtST1lURHV2aXpUZVprOXlUZDJCMUVtelBuSjJhdUE2NG5UYWdpNzVXWkNlVHU2WnRJRlxuNjhNc1c0R1dwc2pXbjlTSURoNHUzMWFBWDRTOTA0MGErclRkaXhBbmdncUdGQVljdFRUZGMxWjMyK1Q0TzhUOFxudEROcnBtbHJpak1ZSjEvUDZNZko2eUVxMkZZZHgra1NPVm0weVJCckZBcVFzQVNRekJQNHN5aUl4cERIVHdSSFxuQ25FMDlINkdmeldsdUtrRHFjdkx1aUJiTmgxUHFqcVBoblNlczROUlVRS0JnUUM5WTFKN2Y5cmREMkQrZVB0a1xuZmR3ajVHeXJraTNUOWtrL0J3MXllTDdXUzN0VUR4NE5XS05HajBZcngzVEpEQXhleFBMWTF6OWVXRDJib0tRRVxuc2NtdFVZQ3Z3eU9jUzJEOFVxN2tVOG96dFluY0daMWVrS2R5NXlIcXQ0YllnbnBjdjNvWUppamgyTFM5NHdUWVxubGo4UnRCQ09jWm94ZzBPd24waE8zMlo1SXdLQmdRQzNCenpxZmVZY0w0Vi9aajI5UFlRSEFrd29ScTdWd3RPSFxudklCTSt6a0pQRlVmYkQvbGw3K3VQN0MrcSt3blg3blZKUTg0WDRYSkIxNEg2UTNpWTQ5WWVtQmsyU2xNMUNtZlxuZ3FRNVlXY3pnNjIydVRYSEJKOS9sQkxmS3I0N0NYOVZSUEZHMHc1WVI4aUM3NHRLZ1owQ21wUjdraFNGM0VwOVxudSt5UXJUVWxoUUtCZ0NhRlZ6ZUxiK2JhdysyK2lkT016Z1AyNkN1VmxnQ3c3WUVHWERQV1gycVMrOGpETW1lZ1xuaWNWR1N3MklpamFDWHRtLzBXMU5pclFUMnFRVzdvV042K2wyMUdmcmx3aXBSRmJPTW9oNmlud3VCcFpnRjJRdVxucEFCNUJxc0pIVUpZZDY3NXUwbkNLVHFXcTF5Y0dsWTdhU1NlcldkcnIrTTJRY1JoQVlJWmFteGxBb0dBZTcvYVxuRVJZVXVxUHEyQ3V4dkx6V0FzTXI2T241bkxCQXczclJLTHVIWWRZNEc2bmVQZ2J2SkFxT0h5MHcyNkplakYybFxuUDlGZUxJRGRzKzJBWkx3NkZIR1JzVDRmTFlJWnJtN3ZTSml4NVdPMzFWNituSlJrbnlibjU1b0h5dlR0OGlKT1xuSER2aGJCRUU0bnJDTEJzY3BNRU5lY3RZTXZXeUsvY2V5T2REa3QwQ2dZQi9xdi9va1NRdkF4RDJ5Yjg4c3BjTlxuVnhCQVJmYXFtZjF4anh4ZENHZ0VwTk5ZN01MTVpFbmtGUDRRY2VDcExsYlA2bUpsWHZCMGFxNmUwTGhaSUZrSlxuZVI5MDRNelRscjNlblpqN3huRlByM2VXM1ZPem9abEZndlJyeFZTbHgwOTh5TmlPTkhzT2x5OVVkNHNaY0hxRVxucnIyQmJuSUpxVC92KzMvK2ZPbG55QT09XG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAiZmlyZWJhc2UtYWRtaW5zZGstZmJzdmNAZ3JhcHRzLTUxODNlLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwKICAiY2xpZW50X2lkIjogIjExMzc0MjU5ODM5MTExNDc2NTQ1NyIsCiAgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwKICAidG9rZW5fdXJpIjogImh0dHBzOi8vb2F1dGgyLmdvb2dsZWFwaXMuY29tL3Rva2VuIiwKICAiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92MS9jZXJ0cyIsCiAgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvZmlyZWJhc2UtYWRtaW5zZGstZmJzdmMlNDBncmFwdHMtNTE4M2UuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLAogICJ1bml2ZXJzZV9kb21haW4iOiAiZ29vZ2xlYXBpcy5jb20iCn0K
 ```
@@ -23,12 +25,12 @@ ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAiZ3JhcHRzLTUxODNl
 
 Set these if they're missing:
 
-| Variable | Value | Notes |
-|----------|-------|-------|
-| `CLIENT_URL` | `https://grapts.vercel.app` | Where your frontend is deployed |
-| `PORT` | `4000` | Server port (Railway will expose via URL) |
-| `FIREBASE_DATABASE_URL` | `https://grapts-5183e.firebaseio.com` | From Firebase Console |
-| `FIREBASE_STORAGE_BUCKET` | `grapts-5183e.firebasestorage.app` | From Firebase Console |
+| Variable                  | Value                                 | Notes                                     |
+| ------------------------- | ------------------------------------- | ----------------------------------------- |
+| `CLIENT_URL`              | `https://grapts.vercel.app`           | Where your frontend is deployed           |
+| `PORT`                    | `4000`                                | Server port (Railway will expose via URL) |
+| `FIREBASE_DATABASE_URL`   | `https://grapts-5183e.firebaseio.com` | From Firebase Console                     |
+| `FIREBASE_STORAGE_BUCKET` | `grapts-5183e.firebasestorage.app`    | From Firebase Console                     |
 
 ## After Setting Secrets
 

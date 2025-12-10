@@ -1,0 +1,31 @@
+# Ignore everything except the client folder (Vercel should be set to `client` as root)
+# This reduces upload size and speeds up Vercel build handling
+
+# Ignore server and backend
+/server
+/server/**
+
+# Ignore root node_modules and logs
+/node_modules
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+
+# Ignore local environment files and secrets
+.env
+*.env
+
+# Ignore build artifacts from local builds
+/client/build
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Keep client source
+!client/**
+!client/**/.*
+!client/package.json
+!client/src/**
+!client/public/**
+!client/.vercelignore

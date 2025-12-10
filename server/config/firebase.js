@@ -8,12 +8,17 @@ let credential;
 if (process.env.FIREBASE_SERVICE_ACCOUNT) {
   try {
     // If it's a base64-encoded JSON string
-    const serviceAccountStr = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, 'base64').toString('utf-8');
+    const serviceAccountStr = Buffer.from(
+      process.env.FIREBASE_SERVICE_ACCOUNT,
+      "base64"
+    ).toString("utf-8");
     credential = admin.credential.cert(JSON.parse(serviceAccountStr));
   } catch (err) {
     // If it's a raw JSON string
     try {
-      credential = admin.credential.cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT));
+      credential = admin.credential.cert(
+        JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+      );
     } catch (err2) {
       console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT:", err2.message);
       throw err2;
@@ -25,7 +30,9 @@ if (process.env.FIREBASE_SERVICE_ACCOUNT) {
   try {
     credential = admin.credential.cert(require(serviceAccountPath));
   } catch (err) {
-    console.warn("Warning: serviceAccountKey.json not found and FIREBASE_SERVICE_ACCOUNT env var not set. Firebase Admin will not be initialized.");
+    console.warn(
+      "Warning: serviceAccountKey.json not found and FIREBASE_SERVICE_ACCOUNT env var not set. Firebase Admin will not be initialized."
+    );
     credential = null;
   }
 }
@@ -39,7 +46,9 @@ if (credential) {
       process.env.FIREBASE_STORAGE_BUCKET || "grapts-5183e.firebasestorage.app",
   });
 } else {
-  console.error("ERROR: Firebase credentials not configured. Set FIREBASE_SERVICE_ACCOUNT or provide serviceAccountKey.json");
+  console.error(
+    "ERROR: Firebase credentials not configured. Set FIREBASE_SERVICE_ACCOUNT or provide serviceAccountKey.json"
+  );
   process.exit(1);
 }
 
