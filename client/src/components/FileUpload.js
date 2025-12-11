@@ -1,6 +1,7 @@
 // src/components/FileUpload.js
 import React, { useState } from "react";
 import { useAuth } from "../services/AuthContext";
+import { BASE_URL } from "../services/api";
 
 export const FileUpload = ({ projectId, milestoneId, onUploaded }) => {
   const [file, setFile] = useState(null);
@@ -16,7 +17,7 @@ export const FileUpload = ({ projectId, milestoneId, onUploaded }) => {
       const base64 = ev.target.result;
 
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:4000/api"}/upload`,
+        const res = await fetch(`${BASE_URL}/upload`,
           {
             method: "POST",
             headers: {

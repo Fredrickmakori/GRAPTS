@@ -15,7 +15,7 @@ client/build/
 .env
 .env.local
 .env.*.local
-
+client/.env
 # OS files
 .DS_Store
 

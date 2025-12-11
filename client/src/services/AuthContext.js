@@ -9,7 +9,6 @@ import {
   GoogleAuthProvider,
   updateProfile,
 } from "firebase/auth";
-
 const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -77,16 +76,11 @@ export const AuthProvider = ({ children }) => {
       const idToken = await cred.user.getIdToken();
 
       // Exchange ID token with backend to get user record (role, displayName)
-      const res = await fetch(
-        `${
-          process.env.REACT_APP_API_URL || "http://localhost:4000/api"
-        }/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ idToken }),
-        }
-      );
+      const res = await fetch(`${BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -135,16 +129,11 @@ export const AuthProvider = ({ children }) => {
       const idToken = await cred.user.getIdToken();
 
       // Exchange ID token with backend to get user record (role, displayName)
-      const res = await fetch(
-        `${
-          process.env.REACT_APP_API_URL || "http://localhost:4000/api"
-        }/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ idToken }),
-        }
-      );
+      const res = await fetch(`${BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));

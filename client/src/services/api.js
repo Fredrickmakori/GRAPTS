@@ -6,9 +6,9 @@ import { getAnalytics } from "firebase/analytics";
 
 // Default Firebase config (CRA uses process.env.REACT_APP_*)
 const DEFAULT_FIREBASE_CONFIG = {
-  apiKey:
-    process.env.REACT_APP_FIREBASE_API_KEY ||
-    "AIzaSyCnJQjcRs2XtJZuJcN3KtOg75K6RM3Q2fM",
+  // Do NOT hardcode a real API key here. Prefer environment variables.
+  // If missing, leave undefined so initialization fails loudly and logs the issue.
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || undefined,
   authDomain:
     process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ||
     "grapts-5183e.firebaseapp.com",
@@ -49,29 +49,75 @@ export const initFirebase = () => {
       storage: firebaseStorage,
     };
 
-  const app = initializeApp(DEFAULT_FIREBASE_CONFIG);
-  firebaseApp = app;
-
   try {
-    if (typeof window !== "undefined") getAnalytics(app);
-  } catch (_) {}
+    // Log the config being used (masked for security)
+    const apiKey = DEFAULT_FIREBASE_CONFIG.apiKey || "undefined";
+    const maskedKey =
+      apiKey && apiKey !== "undefined" ? `***${apiKey.slice(-6)}` : "undefined";
+    const projectId = DEFAULT_FIREBASE_CONFIG.projectId || "undefined";
 
-  firebaseAuth = getAuth(app);
-  firebaseDb = getFirestore(app);
-  firebaseStorage = getStorage(app);
+    // eslint-disable-next-line no-console
+    console.log("[GRAPTS] Initializing Firebase with:");
+    // eslint-disable-next-line no-console
+    console.log("  API Key (masked):", maskedKey);
+    // eslint-disable-next-line no-console
+    console.log("  Project ID:", projectId);
+    // eslint-disable-next-line no-console
+    console.log("  Auth Domain:", DEFAULT_FIREBASE_CONFIG.authDomain);
 
-  return {
-    app: firebaseApp,
-    auth: firebaseAuth,
-    db: firebaseDb,
-    storage: firebaseStorage,
-  };
+    const app = initializeApp(DEFAULT_FIREBASE_CONFIG);
+    firebaseApp = app;
+
+    try {
+      if (typeof window !== "undefined") getAnalytics(app);
+    } catch (_) {}
+
+    firebaseAuth = getAuth(app);
+    firebaseDb = getFirestore(app);
+    firebaseStorage = getStorage(app);
+
+    // eslint-disable-next-line no-console
+    console.log("[GRAPTS] Firebase initialized successfully");
+
+    return {
+      app: firebaseApp,
+      auth: firebaseAuth,
+      db: firebaseDb,
+      storage: firebaseStorage,
+    };
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("[GRAPTS] Firebase initialization failed:", err);
+    // eslint-disable-next-line no-console
+    console.error("[GRAPTS] Config used:", {
+      apiKey: DEFAULT_FIREBASE_CONFIG.apiKey
+        ? `***${DEFAULT_FIREBASE_CONFIG.apiKey.slice(-6)}`
+        : "undefined",
+      projectId: DEFAULT_FIREBASE_CONFIG.projectId,
+      authDomain: DEFAULT_FIREBASE_CONFIG.authDomain,
+      appId: DEFAULT_FIREBASE_CONFIG.appId,
+    });
+    throw err;
+  }
 };
 
 // -----------------------------
 // BASE API URL
 // -----------------------------
-const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:4000/api";
+// Normalize API URL environment variable in case someone pasted a fallback string
+function pickFirstUrl(value) {
+  if (!value) return null;
+  // Look for first http(s)://... substring
+  const m = value.match(/https?:\/\/[^\s\|]+/i);
+  if (m) return m[0];
+  // fallback: if it's a plain host like localhost:4000, prefix http://
+  if (/^localhost(:\d+)?/.test(value)) return `http://${value}`;
+  return value;
+}
+
+const rawApiUrl = process.env.REACT_APP_API_URL;
+const picked = pickFirstUrl(rawApiUrl);
+const BASE_URL = picked || "http://localhost:4000/api";
 
 // Runtime checks: validate that important envs are present and warn with masked output.
 export function checkRuntimeConfig() {
@@ -107,6 +153,20 @@ export function checkRuntimeConfig() {
       );
       // eslint-disable-next-line no-console
       console.info(`[GRAPTS] Firebase API Key (masked): ${maskedKey}`);
+      // eslint-disable-next-line no-console
+      console.info(`[GRAPTS] Current config:`, {
+        api_key: maskedKey,
+        project_id:
+          process.env.REACT_APP_FIREBASE_PROJECT_ID ||
+          DEFAULT_FIREBASE_CONFIG.projectId,
+        auth_domain:
+          process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ||
+          DEFAULT_FIREBASE_CONFIG.authDomain,
+        app_id:
+          process.env.REACT_APP_FIREBASE_APP_ID ||
+          DEFAULT_FIREBASE_CONFIG.appId,
+        api_url: process.env.REACT_APP_API_URL || BASE_URL,
+      });
     } else {
       // eslint-disable-next-line no-console
       console.info(
@@ -125,7 +185,8 @@ export function checkRuntimeConfig() {
       );
     }
   } catch (e) {
-    // ignore logging failures
+    // eslint-disable-next-line no-console
+    console.error("[GRAPTS] Error in checkRuntimeConfig:", e);
   }
 }
 
