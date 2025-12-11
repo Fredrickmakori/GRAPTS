@@ -18,9 +18,27 @@ const path = require("path");
 const app = express();
 
 // CORS configuration to allow credentials and specific origins
+// CORS configuration: allow a comma-separated list of origins via CLIENT_URLS
+// or a single origin via CLIENT_URL. Defaults to localhost for local dev.
+const clientOriginsRaw =
+  process.env.CLIENT_URLS || process.env.CLIENT_URL || "http://localhost:3000";
+const allowedOrigins = clientOriginsRaw
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+// Helpful debug log (will appear in server logs)
+console.log("[GRAPTS] Allowed CORS origins:", allowedOrigins);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: function (origin, callback) {
+      // allow non-browser requests like curl, server-to-server
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+      // explicit rejection
+      return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
     credentials: true,
   })
 );
