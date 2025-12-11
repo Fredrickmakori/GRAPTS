@@ -17,22 +17,20 @@ export const FileUpload = ({ projectId, milestoneId, onUploaded }) => {
       const base64 = ev.target.result;
 
       try {
-        const res = await fetch(`${BASE_URL}/upload`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              fileName: file.name,
-              contentType: file.type,
-              base64,
-              projectId,
-              milestoneId,
-            }),
-          }
-        );
+        const res = await fetch(`${BASE_URL}/upload`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            fileName: file.name,
+            contentType: file.type,
+            base64,
+            projectId,
+            milestoneId,
+          }),
+        });
 
         const data = await res.json();
         setUploading(false);

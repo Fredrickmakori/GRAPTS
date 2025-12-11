@@ -4,25 +4,17 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 
-// Default Firebase config (CRA uses process.env.REACT_APP_*)
+// Firebase config must come from environment variables only.
+// Do NOT store secrets or API keys in source code. Provide them via
+// `client/.env.local` (for development) and via your deployment's env settings.
 const DEFAULT_FIREBASE_CONFIG = {
-  // Do NOT hardcode a real API key here. Prefer environment variables.
-  // If missing, leave undefined so initialization fails loudly and logs the issue.
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || undefined,
-  authDomain:
-    process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ||
-    "grapts-5183e.firebaseapp.com",
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "grapts-5183e",
-  storageBucket:
-    process.env.REACT_APP_FIREBASE_STORAGE_BUCKET ||
-    "grapts-5183e.firebasestorage.app",
-  messagingSenderId:
-    process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "576756303354",
-  appId:
-    process.env.REACT_APP_FIREBASE_APP_ID ||
-    "1:576756303354:web:202e8af5499d4560345043",
-  measurementId:
-    process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-LVMS63YGB1",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Debug: show which API key was bundled (remove in production)
@@ -65,6 +57,8 @@ export const initFirebase = () => {
     // eslint-disable-next-line no-console
     console.log("  Auth Domain:", DEFAULT_FIREBASE_CONFIG.authDomain);
 
+    // Initialize with whatever env vars are present. If required fields are missing
+    // Firebase init will throw; we catch and re-throw further below with masked info.
     const app = initializeApp(DEFAULT_FIREBASE_CONFIG);
     firebaseApp = app;
 
@@ -89,13 +83,13 @@ export const initFirebase = () => {
     // eslint-disable-next-line no-console
     console.error("[GRAPTS] Firebase initialization failed:", err);
     // eslint-disable-next-line no-console
-    console.error("[GRAPTS] Config used:", {
+    console.error("[GRAPTS] Config used (masked):", {
       apiKey: DEFAULT_FIREBASE_CONFIG.apiKey
         ? `***${DEFAULT_FIREBASE_CONFIG.apiKey.slice(-6)}`
         : "undefined",
-      projectId: DEFAULT_FIREBASE_CONFIG.projectId,
-      authDomain: DEFAULT_FIREBASE_CONFIG.authDomain,
-      appId: DEFAULT_FIREBASE_CONFIG.appId,
+      projectId: DEFAULT_FIREBASE_CONFIG.projectId || "undefined",
+      authDomain: DEFAULT_FIREBASE_CONFIG.authDomain || "undefined",
+      appId: DEFAULT_FIREBASE_CONFIG.appId || "undefined",
     });
     throw err;
   }
@@ -117,7 +111,9 @@ function pickFirstUrl(value) {
 
 const rawApiUrl = process.env.REACT_APP_API_URL;
 const picked = pickFirstUrl(rawApiUrl);
-const BASE_URL = picked || "http://localhost:4000/api";
+// Do NOT default to localhost. If `REACT_APP_API_URL` is not provided,
+// leave `BASE_URL` undefined so misconfiguration surfaces early.
+const BASE_URL = picked || undefined;
 
 // Runtime checks: validate that important envs are present and warn with masked output.
 export function checkRuntimeConfig() {
@@ -174,15 +170,22 @@ export function checkRuntimeConfig() {
       );
     }
 
-    // Warn if using localhost API URL in production builds
-    if (
-      process.env.NODE_ENV === "production" &&
-      BASE_URL.includes("localhost")
-    ) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "[GRAPTS] Running in production but `REACT_APP_API_URL` is pointing to localhost. This may be incorrect."
-      );
+    // In production, do not allow missing or localhost API URLs — fail fast
+    if (process.env.NODE_ENV === "production") {
+      if (!BASE_URL) {
+        // eslint-disable-next-line no-console
+        console.error(
+          "[GRAPTS] REACT_APP_API_URL is not set. Set it in your environment for production."
+        );
+        throw new Error("Missing REACT_APP_API_URL in production environment");
+      }
+      if (BASE_URL.includes("localhost")) {
+        // eslint-disable-next-line no-console
+        console.error(
+          "[GRAPTS] REACT_APP_API_URL points to localhost in production. This is not allowed."
+        );
+        throw new Error("REACT_APP_API_URL points to localhost in production");
+      }
     }
   } catch (e) {
     // eslint-disable-next-line no-console
