@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithPopup,
+  signInWithRedirect,
   GoogleAuthProvider,
   updateProfile,
 } from "firebase/auth";
@@ -125,27 +126,60 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      const cred = await signInWithPopup(auth, provider);
-      const idToken = await cred.user.getIdToken();
+      
+      // Use redirect for better compatibility with COOP policies
+      // Fall back to popup if redirect fails
+      try {
+        const cred = await signInWithPopup(auth, provider);
+        const idToken = await cred.user.getIdToken();
 
-      // Exchange ID token with backend to get user record (role, displayName)
-      const res = await fetch(`${BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-      });
+        // Exchange ID token with backend to get user record (role, displayName)
+        const res = await fetch(`${BASE_URL}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idToken }),
+        });
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || "Backend login failed");
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || "Backend login failed");
+        }
+
+        const data = await res.json();
+        setUser(data.user);
+        setToken(data.token || idToken);
+        localStorage.setItem("token", data.token || idToken);
+        setLoading(false);
+        return data;
+      } catch (popupErr) {
+        // If popup fails due to COOP or cancellation, try redirect
+        if (popupErr.code === 'auth/cancelled-popup-request' || 
+            popupErr.code === 'auth/popup-blocked' ||
+            popupErr.message?.includes('Cross-Origin-Opener-Policy')) {
+          console.warn("Popup blocked, falling back to redirect");
+          const { getRedirectResult } = await import("firebase/auth");
+          await signInWithRedirect(auth, provider);
+          const result = await getRedirectResult(auth);
+          if (result) {
+            const idToken = await result.user.getIdToken();
+            const res = await fetch(`${BASE_URL}/auth/login`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ idToken }),
+            });
+            if (!res.ok) {
+              const err = await res.json().catch(() => ({}));
+              throw new Error(err.error || "Backend login failed");
+            }
+            const data = await res.json();
+            setUser(data.user);
+            setToken(data.token || idToken);
+            localStorage.setItem("token", data.token || idToken);
+            return data;
+          }
+        }
+        throw popupErr;
       }
-
-      const data = await res.json();
-      setUser(data.user);
-      setToken(data.token || idToken);
-      localStorage.setItem("token", data.token || idToken);
-      setLoading(false);
-      return data;
     } catch (err) {
       setLoading(false);
       console.error("Google sign-in error:", err);
