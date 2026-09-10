@@ -99,13 +99,13 @@ export const initFirebase = () => {
 // BASE API URL
 // -----------------------------
 // In Cloudflare Worker deployment, API is served from the same origin.
-// Use relative URLs for production (Worker serves both frontend and backend).
-// Fall back to REACT_APP_API_URL for local development if provided.
+// Use relative URLs for production (Worker serves both backend and frontend).
+// For local development, set REACT_APP_API_URL to your local server (e.g., http://localhost:4000).
 const rawApiUrl = process.env.REACT_APP_API_URL;
 const isWorkerDeployment = !rawApiUrl || rawApiUrl.includes('workers.dev') || rawApiUrl.includes('grapts');
 const BASE_URL = isWorkerDeployment ? '' : rawApiUrl;
 
-// Runtime checks: validate that important envs are present and warn with masked output.
+// Runtime checks: validate that important envs are present
 export function checkRuntimeConfig() {
   try {
     if (typeof window === "undefined") return;
@@ -113,11 +113,9 @@ export function checkRuntimeConfig() {
     const missing = [];
     const envMap = {
       REACT_APP_FIREBASE_API_KEY: process.env.REACT_APP_FIREBASE_API_KEY,
-      REACT_APP_FIREBASE_AUTH_DOMAIN:
-        process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+      REACT_APP_FIREBASE_AUTH_DOMAIN: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
       REACT_APP_FIREBASE_PROJECT_ID: process.env.REACT_APP_FIREBASE_PROJECT_ID,
       REACT_APP_FIREBASE_APP_ID: process.env.REACT_APP_FIREBASE_APP_ID,
-      REACT_APP_API_URL: process.env.REACT_APP_API_URL,
     };
 
     Object.entries(envMap).forEach(([k, v]) => {
@@ -125,60 +123,25 @@ export function checkRuntimeConfig() {
     });
 
     // Mask API key for logs
-    const apiKey =
-      envMap.REACT_APP_FIREBASE_API_KEY || DEFAULT_FIREBASE_CONFIG.apiKey || "";
+    const apiKey = envMap.REACT_APP_FIREBASE_API_KEY || "";
     const maskedKey = apiKey ? `***${apiKey.slice(-6)}` : "undefined";
 
     if (missing.length > 0) {
-      // show concise guidance
-      // eslint-disable-next-line no-console
       console.warn(
-        `[GRAPTS] Runtime config: missing envs: ${missing.join(
-          ", "
-        )}. Firebase may fail in production.`
+        `[GRAPTS] Runtime config: missing envs: ${missing.join(", ")}. Firebase may fail in production.`
       );
-      // eslint-disable-next-line no-console
       console.info(`[GRAPTS] Firebase API Key (masked): ${maskedKey}`);
-      // eslint-disable-next-line no-console
-      console.info(`[GRAPTS] Current config:`, {
-        api_key: maskedKey,
-        project_id:
-          process.env.REACT_APP_FIREBASE_PROJECT_ID ||
-          DEFAULT_FIREBASE_CONFIG.projectId,
-        auth_domain:
-          process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ||
-          DEFAULT_FIREBASE_CONFIG.authDomain,
-        app_id:
-          process.env.REACT_APP_FIREBASE_APP_ID ||
-          DEFAULT_FIREBASE_CONFIG.appId,
-        api_url: process.env.REACT_APP_API_URL || BASE_URL,
-      });
     } else {
-      // eslint-disable-next-line no-console
-      console.info(
-        `[GRAPTS] Firebase config looks present. API Key (masked): ${maskedKey}`
-      );
+      console.info(`[GRAPTS] Firebase config looks present. API Key (masked): ${maskedKey}`);
     }
 
-    // In production, do not allow missing or localhost API URLs — fail fast
-    if (process.env.NODE_ENV === "production") {
+    // In production, do not allow missing API URL for non-Worker deployments
+    if (process.env.NODE_ENV === "production" && !isWorkerDeployment) {
       if (!BASE_URL) {
-        // eslint-disable-next-line no-console
-        console.error(
-          "[GRAPTS] REACT_APP_API_URL is not set. Set it in your environment for production."
-        );
-        throw new Error("Missing REACT_APP_API_URL in production environment");
-      }
-      if (BASE_URL.includes("localhost")) {
-        // eslint-disable-next-line no-console
-        console.error(
-          "[GRAPTS] REACT_APP_API_URL points to localhost in production. This is not allowed."
-        );
-        throw new Error("REACT_APP_API_URL points to localhost in production");
+        console.error("[GRAPTS] REACT_APP_API_URL is not set. Set it for non-Worker production deployment.");
       }
     }
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.error("[GRAPTS] Error in checkRuntimeConfig:", e);
   }
 }
