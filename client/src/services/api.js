@@ -98,22 +98,12 @@ export const initFirebase = () => {
 // -----------------------------
 // BASE API URL
 // -----------------------------
-// Normalize API URL environment variable in case someone pasted a fallback string
-function pickFirstUrl(value) {
-  if (!value) return null;
-  // Look for first http(s)://... substring
-  const m = value.match(/https?:\/\/[^\s\|]+/i);
-  if (m) return m[0];
-  // fallback: if it's a plain host like localhost:4000, prefix http://
-  if (/^localhost(:\d+)?/.test(value)) return `http://${value}`;
-  return value;
-}
-
+// In Cloudflare Worker deployment, API is served from the same origin.
+// Use relative URLs for production (Worker serves both frontend and backend).
+// Fall back to REACT_APP_API_URL for local development if provided.
 const rawApiUrl = process.env.REACT_APP_API_URL;
-const picked = pickFirstUrl(rawApiUrl);
-// Do NOT default to localhost. If `REACT_APP_API_URL` is not provided,
-// leave `BASE_URL` undefined so misconfiguration surfaces early.
-const BASE_URL = picked || undefined;
+const isWorkerDeployment = !rawApiUrl || rawApiUrl.includes('workers.dev') || rawApiUrl.includes('grapts');
+const BASE_URL = isWorkerDeployment ? '' : rawApiUrl;
 
 // Runtime checks: validate that important envs are present and warn with masked output.
 export function checkRuntimeConfig() {

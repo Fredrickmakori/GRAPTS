@@ -4,20 +4,25 @@
   "description": "Government Resource Allocation & Project Tracking System",
   "private": true,
   "scripts": {
-    "main": "server/index.js",
+    "main": "worker/index.js",
     "install:all": "npm install && cd client && npm install && cd ../server && npm install && cd ..",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "npm --prefix server run dev",
     "dev:client": "npm --prefix client start",
     "start": "cd server && node index.js",
     "prebuild": "cd client && npm install",
-    "build": "cd client && npm install && npm run build",
+    "build": "cd client && npm run build",
     "postinstall": "node ./scripts/postinstall.js",
-    "build:full": "npm install:all && npm run build",
-    "test": "cd client && npm test"
+    "build:full": "npm run build && npx wrangler deploy --dry-run",
+    "deploy": "npx wrangler deploy",
+    "test": "cd client && npm test",
+    "cf:dev": "npx wrangler dev",
+    "cf:deploy": "npx wrangler deploy",
+    "cf:tail": "npx wrangler tail"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "wrangler": "^3.114.17"
   },
   "dependencies": {
     "ai": "^5.0.108",
